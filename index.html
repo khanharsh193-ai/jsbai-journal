@@ -1,0 +1,765 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>JSBAI — Journal of Sustainable Biosciences & Agricultural Innovation</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&family=Source+Serif+4:ital,opsz,wght@0,8..60,300;0,8..60,400;0,8..60,600;1,8..60,300&family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500&display=swap" rel="stylesheet">
+<style>
+/* ─── PASTE YOUR SCRIPT URL HERE ──────────────────────────────────────────────
+   After deploying Code.gs, replace the value below with your Web App URL.
+   It looks like: https://script.google.com/macros/s/XXXX.../exec
+   ─────────────────────────────────────────────────────────────────────────── */
+
+/* ─── DESIGN TOKENS ─────────────────────────────────────────────────────────── */
+:root {
+  --f:  #1a3a2a;  --fm: #2a5c3f;  --fl: #3b7a55;
+  --sp: #c4dac9;
+  --cr: #f7f3ec;  --cd: #ede7dc;  --ww: #fdfaf6;
+  --k:  #1c1a17;  --km: #3d3b35;  --kl: #7a766e;
+  --g:  #b5892d;  --gl: #d4a843;
+  --bd: #d1c9ba;  --ra: #8b2c2c;
+  --rr: 4px;
+}
+
+/* ─── RESET & BASE ───────────────────────────────────────────────────────────── */
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{font-family:'DM Sans',sans-serif;background:var(--ww);color:var(--k);font-size:15px;line-height:1.7}
+a{color:inherit}
+img{max-width:100%}
+
+/* ─── TOPBAR ─────────────────────────────────────────────────────────────────── */
+.topbar{background:var(--f);color:var(--sp);font-size:12px;padding:7px 0;letter-spacing:.03em}
+.topbar .in{max-width:1200px;margin:auto;padding:0 32px;display:flex;justify-content:space-between;align-items:center;gap:12px}
+.topbar a{color:var(--sp);text-decoration:none;transition:color .15s}.topbar a:hover{color:#fff}
+.tpills{display:flex;gap:10px;align-items:center;flex-wrap:wrap}
+.pill{background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.15);padding:2px 10px;border-radius:20px;font-size:11px;white-space:nowrap}
+.pill b{color:var(--gl)}
+
+/* ─── HEADER ─────────────────────────────────────────────────────────────────── */
+header{background:var(--cr);border-bottom:2px solid var(--f)}
+.hd{max-width:1200px;margin:auto;padding:22px 32px;display:flex;align-items:flex-start;gap:22px}
+.logo{width:66px;height:66px;flex-shrink:0;background:var(--f);border-radius:var(--rr);display:flex;align-items:center;justify-content:center;font-family:'Playfair Display',serif;color:var(--cr);font-size:24px;font-weight:700;letter-spacing:-1px;user-select:none}
+.jtitle{flex:1}
+.jabbr{font-size:11px;font-weight:500;letter-spacing:.14em;color:var(--fm);text-transform:uppercase;margin-bottom:3px}
+.jname{font-family:'Playfair Display',serif;font-size:24px;font-weight:700;color:var(--f);line-height:1.2;margin-bottom:6px}
+.jmeta{font-size:12.5px;color:var(--kl);display:flex;gap:16px;flex-wrap:wrap;align-items:center}
+.nb{background:var(--g);color:#fff;padding:2px 10px;border-radius:3px;font-weight:600;font-size:12px}
+.hbtns{display:flex;flex-direction:column;gap:7px;flex-shrink:0;padding-top:2px}
+.btn{display:block;padding:9px 20px;border-radius:var(--rr);font-family:'DM Sans',sans-serif;font-size:13px;font-weight:500;cursor:pointer;text-align:center;text-decoration:none;border:none;transition:all .2s;letter-spacing:.01em}
+.btn-p{background:var(--f);color:#fff}.btn-p:hover{background:var(--fm)}
+.btn-o{background:transparent;color:var(--f);border:1.5px solid var(--f)}.btn-o:hover{background:var(--f);color:#fff}
+
+/* ─── NAV ────────────────────────────────────────────────────────────────────── */
+nav{background:var(--f);position:sticky;top:0;z-index:100;box-shadow:0 2px 12px rgba(0,0,0,.15)}
+.nav{max-width:1200px;margin:auto;padding:0 32px;display:flex;align-items:center;overflow-x:auto}
+nav a{color:rgba(255,255,255,.7);text-decoration:none;font-size:13px;font-weight:400;padding:13px 15px;display:block;border-bottom:2px solid transparent;transition:all .15s;white-space:nowrap}
+nav a:hover,nav a.on{color:#fff;border-bottom-color:var(--gl)}
+
+/* ─── HERO ───────────────────────────────────────────────────────────────────── */
+.hero{background:linear-gradient(135deg,#0f2218 0%,var(--f) 45%,var(--fm) 100%);padding:52px 32px;position:relative;overflow:hidden}
+.hero::after{content:'';position:absolute;inset:0;background:url("data:image/svg+xml,%3Csvg width='60' height='60' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M0 60L60 0M-10 10L10-10M50 70L70 50' stroke='white' stroke-width='.4' opacity='.04'/%3E%3C/svg%3E") repeat;pointer-events:none}
+.hero .in{max-width:1200px;margin:auto;display:flex;gap:40px;align-items:center;position:relative;z-index:1}
+.ht{flex:1}
+.hlbl{font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--sp);margin-bottom:12px;display:flex;align-items:center;gap:10px}
+.hlbl::before{content:'';width:26px;height:1px;background:var(--gl);display:inline-block}
+.hero h1{font-family:'Playfair Display',serif;font-size:34px;font-weight:700;line-height:1.2;color:#fff;margin-bottom:14px}
+.hero p{color:rgba(255,255,255,.8);max-width:540px;font-size:15px;line-height:1.85}
+.hm{display:flex;flex-shrink:0;border:1px solid rgba(255,255,255,.14);border-radius:6px;overflow:hidden;background:rgba(255,255,255,.06);backdrop-filter:blur(8px)}
+.hmet{padding:20px 26px;text-align:center;border-right:1px solid rgba(255,255,255,.1)}
+.hmet:last-child{border-right:none}
+.hmv{font-family:'Playfair Display',serif;font-size:28px;font-weight:700;color:var(--gl);display:block;line-height:1}
+.hml{font-size:11px;color:rgba(255,255,255,.55);margin-top:5px;letter-spacing:.04em}
+
+/* ─── LAYOUT ─────────────────────────────────────────────────────────────────── */
+.main{max-width:1200px;margin:auto;padding:36px 32px;display:flex;gap:28px}
+.content{flex:1;min-width:0}
+.sidebar{width:276px;flex-shrink:0}
+
+/* ─── TABS ───────────────────────────────────────────────────────────────────── */
+.tbar{display:flex;border-bottom:2px solid var(--cd);margin-bottom:22px;overflow-x:auto}
+.tb{padding:10px 18px;font-size:13.5px;font-weight:500;cursor:pointer;border:none;background:none;color:var(--kl);border-bottom:2px solid transparent;margin-bottom:-2px;font-family:'DM Sans',sans-serif;transition:all .15s;white-space:nowrap}
+.tb.on{color:var(--f);border-bottom-color:var(--f)}.tb:hover{color:var(--f)}
+.tp{display:none}.tp.on{display:block}
+
+/* ─── SECTION HEADINGS ───────────────────────────────────────────────────────── */
+.sh{font-family:'Playfair Display',serif;font-size:20px;font-weight:600;color:var(--f);margin-bottom:16px;padding-bottom:10px;border-bottom:2px solid var(--cd);display:flex;align-items:center;gap:10px}
+.sh .tag{font-size:11px;font-family:'DM Sans',sans-serif;background:var(--f);color:#fff;padding:2px 8px;border-radius:2px;letter-spacing:.05em;font-weight:500}
+.ssub{font-size:12.5px;font-weight:500;color:var(--fm);letter-spacing:.05em;text-transform:uppercase;margin:18px 0 11px;padding-bottom:5px;border-bottom:1px solid var(--cd)}
+
+/* ─── ANNOUNCEMENT ───────────────────────────────────────────────────────────── */
+.ann{background:#fef9ee;border:1px solid #e8d595;border-radius:var(--rr);padding:12px 16px;margin-bottom:20px;display:flex;gap:11px;font-size:13px}
+.ann p{color:var(--km);margin-top:2px}
+
+/* ─── SCOPE GRID ─────────────────────────────────────────────────────────────── */
+.sg{display:grid;grid-template-columns:1fr 1fr;gap:9px;margin-top:14px}
+.si{background:var(--cr);border-left:3px solid var(--fl);padding:9px 13px;border-radius:0 3px 3px 0;font-size:13px;color:var(--km)}
+.si strong{color:var(--f);font-weight:500;display:block;margin-bottom:2px}
+
+/* ─── FORM ───────────────────────────────────────────────────────────────────── */
+.fn{background:#f0f7f3;border:1px solid #b0d4bc;border-radius:var(--rr);padding:12px 16px;margin-bottom:20px;font-size:13.5px;color:#1a4a2a;display:flex;gap:10px}
+.fg{margin-bottom:15px}
+.fg label{display:block;font-size:13px;font-weight:500;color:var(--km);margin-bottom:5px}
+.req{color:var(--ra);margin-left:2px}
+.hint{font-weight:400;color:var(--kl);font-size:12px}
+.fg input,.fg select,.fg textarea{width:100%;padding:9px 12px;border:1px solid var(--bd);border-radius:3px;font-family:'DM Sans',sans-serif;font-size:14px;color:var(--k);background:#fff;outline:none;transition:border .18s;appearance:none;-webkit-appearance:none}
+.fg input:focus,.fg select:focus,.fg textarea:focus{border-color:var(--fm);box-shadow:0 0 0 3px rgba(42,92,63,.1)}
+.fg textarea{min-height:98px;resize:vertical}
+.fr2{display:grid;grid-template-columns:1fr 1fr;gap:13px}
+.fr3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:13px}
+
+/* File drop */
+.fd{border:2px dashed var(--bd);border-radius:var(--rr);padding:24px 14px;text-align:center;cursor:pointer;transition:all .2s;background:var(--cr)}
+.fd:hover{border-color:var(--fm);background:#f0f7f3}
+.fd-ico{font-size:26px;margin-bottom:7px}
+.fd p{font-size:13px;color:var(--kl)}.fd strong{color:var(--f)}
+.fd small{display:block;margin-top:4px;font-size:12px;color:var(--kl)}
+.fd-name{font-size:12px;color:var(--fm);margin-top:5px;font-weight:500;min-height:18px}
+
+/* Checkboxes */
+.cg{display:flex;gap:8px;align-items:flex-start;margin-top:3px}
+.cg input{margin-top:4px;flex-shrink:0;accent-color:var(--f)}
+.cg label{font-size:13px;color:var(--km);font-weight:400;cursor:pointer}
+
+/* Submit */
+.sbtn{background:var(--f);color:#fff;border:none;padding:12px 30px;border-radius:var(--rr);font-size:15px;font-weight:500;font-family:'DM Sans',sans-serif;cursor:pointer;transition:background .2s;letter-spacing:.015em}
+.sbtn:hover:not(:disabled){background:var(--fm)}
+.sbtn:disabled{opacity:.55;cursor:not-allowed}
+
+/* Progress */
+.prog{margin-top:12px}
+.pb{width:100%;height:5px;background:var(--cd);border-radius:3px;overflow:hidden;display:none}
+.pf{height:100%;background:var(--fm);border-radius:3px;transition:width .4s ease;width:0%}
+.pl{font-size:12px;color:var(--kl);margin-top:5px;display:none;min-height:16px}
+
+/* ─── ARTICLES ───────────────────────────────────────────────────────────────── */
+.ac{border:1px solid var(--bd);border-radius:var(--rr);overflow:hidden;margin-bottom:13px;transition:box-shadow .2s}
+.ac:hover{box-shadow:0 2px 14px rgba(0,0,0,.08)}
+.aci{padding:15px}
+.atype{font-size:11px;font-weight:500;letter-spacing:.06em;text-transform:uppercase;color:var(--fm);margin-bottom:5px}
+.atitle{font-family:'Source Serif 4',serif;font-size:15px;font-weight:600;color:var(--k);line-height:1.4;margin-bottom:5px}
+.aauth{font-size:12.5px;color:var(--kl);margin-bottom:7px}
+.aabs{font-size:13px;color:var(--km);line-height:1.6;margin-bottom:9px}
+.afoot{display:flex;justify-content:space-between;align-items:center;padding:9px 15px;background:var(--cr);border-top:1px solid var(--bd);font-size:12px;color:var(--kl)}
+.doi{color:var(--fm);text-decoration:none}.doi:hover{text-decoration:underline}
+
+/* ─── GUIDE CARDS ────────────────────────────────────────────────────────────── */
+.gc{background:var(--cr);border:1px solid var(--bd);border-radius:var(--rr);padding:16px 18px;margin-bottom:11px}
+.gc h4{font-family:'Source Serif 4',serif;font-size:15px;font-weight:600;color:var(--f);margin-bottom:8px}
+.gc ul{padding-left:17px}.gc ul li{font-size:13.5px;color:var(--km);margin-bottom:4px}
+
+/* ─── SIDEBAR ────────────────────────────────────────────────────────────────── */
+.sc{background:var(--cr);border:1px solid var(--bd);border-radius:var(--rr);margin-bottom:18px;overflow:hidden}
+.sch{background:var(--f);color:#fff;padding:9px 15px;font-size:12px;font-weight:500;letter-spacing:.08em;text-transform:uppercase}
+.scb{padding:14px}
+.mr{display:flex;justify-content:space-between;align-items:center;padding:6px 0;border-bottom:1px solid var(--cd);font-size:13px}
+.mr:last-child{border-bottom:none}
+.mr .lbl{color:var(--kl)}.mr .val{font-weight:500;color:var(--k)}
+.mr .val.gd{color:var(--g);font-weight:600}.mr .val.gr{color:var(--fm)}
+.el{list-style:none}
+.ei{padding:8px 0;border-bottom:1px solid var(--cd)}.ei:last-child{border-bottom:none}
+.en{font-size:13px;font-weight:500;color:var(--k)}.ea{font-size:12px;color:var(--kl);line-height:1.4}
+.er{font-size:11px;color:var(--fm);font-weight:500;letter-spacing:.04em;text-transform:uppercase;margin-bottom:2px}
+.dl{display:flex;justify-content:space-between;align-items:flex-start;padding:8px 0;border-bottom:1px solid var(--cd);font-size:13px}
+.dl:last-child{border-bottom:none}
+.dd{color:var(--fm);font-weight:500;text-align:right;font-size:12px}
+.obadge{background:#e8f5ed;color:#1a5c34;border:1px solid #a8d5b5;padding:2px 8px;border-radius:20px;font-size:11px;font-weight:500;display:inline-block;margin-top:5px}
+.ix{display:flex;flex-direction:column;gap:7px}
+.ii{display:flex;align-items:center;justify-content:space-between;background:#fff;border:1px solid var(--bd);padding:7px 11px;border-radius:3px;font-size:13px}
+.ii .in2{font-weight:500;color:var(--k)}.ii .ck{color:var(--fm)}
+
+/* ─── MODAL ──────────────────────────────────────────────────────────────────── */
+.mo{display:none;position:fixed;inset:0;background:rgba(0,0,0,.55);z-index:1000;align-items:center;justify-content:center}
+.mo.on{display:flex}
+.mb{background:#fff;border-radius:8px;padding:36px;max-width:460px;width:90%;text-align:center;animation:mfade .25s ease}
+@keyframes mfade{from{opacity:0;transform:scale(.96)}to{opacity:1;transform:scale(1)}}
+.mi{font-size:52px;margin-bottom:14px}
+.mb h3{font-family:'Playfair Display',serif;font-size:22px;color:var(--f);margin-bottom:10px}
+.mb p{font-size:14px;color:var(--km);margin-bottom:7px}
+.rid{font-family:monospace;background:var(--cr);border:1px solid var(--bd);padding:8px 16px;border-radius:3px;font-size:17px;font-weight:700;color:var(--k);display:inline-block;margin:10px 0;letter-spacing:.06em}
+.mc{background:var(--f);color:#fff;border:none;padding:11px 28px;border-radius:3px;font-size:14px;font-family:'DM Sans',sans-serif;cursor:pointer;margin-top:14px}
+.mc:hover{background:var(--fm)}
+
+/* ─── ERROR TOAST ────────────────────────────────────────────────────────────── */
+.toast{position:fixed;bottom:24px;left:50%;transform:translateX(-50%);background:#7b241c;color:#fff;padding:12px 24px;border-radius:6px;font-size:13.5px;z-index:9999;opacity:0;transition:opacity .3s;pointer-events:none;max-width:90%;text-align:center}
+.toast.on{opacity:1}
+
+/* ─── FOOTER ─────────────────────────────────────────────────────────────────── */
+footer{background:var(--f);color:rgba(255,255,255,.7);margin-top:40px;padding:36px 32px 18px}
+.fi{max-width:1200px;margin:auto}
+.fg4{display:grid;grid-template-columns:2fr 1fr 1fr 1fr;gap:28px;margin-bottom:28px}
+.fc h4{font-size:12px;font-weight:500;letter-spacing:.1em;text-transform:uppercase;color:var(--sp);margin-bottom:10px}
+.fc p,.fc li{font-size:13px;line-height:1.8}
+.fc ul{list-style:none}.fc ul li a{color:rgba(255,255,255,.6);text-decoration:none;transition:color .15s}.fc ul li a:hover{color:#fff}
+.fc .pub{font-size:12px;color:rgba(255,255,255,.45);margin-top:7px}
+.fb{border-top:1px solid rgba(255,255,255,.1);padding-top:14px;display:flex;justify-content:space-between;font-size:12px;color:rgba(255,255,255,.38);flex-wrap:wrap;gap:8px}
+.fiss{display:flex;gap:14px}
+
+@media(max-width:920px){
+  .main{flex-direction:column}.sidebar{width:100%}
+  .hero .in{flex-direction:column;gap:24px}
+  .fg4{grid-template-columns:1fr 1fr}
+  .fr2,.fr3{grid-template-columns:1fr}
+  .sg{grid-template-columns:1fr}
+}
+</style>
+</head>
+<body>
+
+<!-- ─── CONFIG ───────────────────────────────────────────────────────────────── -->
+<script>
+  // ⚠ ONLY ONE THING TO CHANGE:
+  // Replace this URL with your Google Apps Script Web App URL after deploying Code.gs
+  const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbwo56WXPBoVljHnuSJS1RXxBjBX0ywntQMwC_jT9_m4lsS9x8PmrNifrJt6LtKAJk9z/exec';
+</script>
+
+<!-- ─── TOPBAR ───────────────────────────────────────────────────────────────── -->
+<div class="topbar">
+  <div class="in">
+    <span>BioAgri Academic Publishers Pvt. Ltd. &nbsp;·&nbsp; New Delhi, India</span>
+    <div class="tpills">
+      <span class="pill">NAAS Rating <b>6.52</b> (2024)</span>
+      <span class="pill">Scopus Indexed</span>
+      <span class="pill">UGC-CARE List I</span>
+      <a href="admin.html">Editor Login →</a>
+    </div>
+  </div>
+</div>
+
+<!-- ─── HEADER ───────────────────────────────────────────────────────────────── -->
+<header>
+  <div class="hd">
+    <div class="logo">JS</div>
+    <div class="jtitle">
+      <div class="jabbr">JSBAI &nbsp;·&nbsp; Established 2018</div>
+      <div class="jname">Journal of Sustainable Biosciences<br>&amp; Agricultural Innovation</div>
+      <div class="jmeta">
+        <span>ISSN (Online): 2583-8142</span>
+        <span>ISSN (Print): 2583-8126</span>
+        <span>Quarterly</span>
+        <span><span class="nb">NAAS 6.52</span></span>
+      </div>
+    </div>
+    <div class="hbtns">
+      <a class="btn btn-p" onclick="goTab('submit');return false" href="#">Submit Manuscript</a>
+      <a class="btn btn-o" onclick="goTab('guide');return false" href="#">Author Guidelines</a>
+    </div>
+  </div>
+</header>
+
+<!-- ─── NAV ──────────────────────────────────────────────────────────────────── -->
+<nav>
+  <div class="nav">
+    <a href="#" class="on" onclick="goTab('about');return false">Home</a>
+    <a href="#" onclick="goTab('about');return false">About</a>
+    <a href="#" onclick="goTab('articles');return false">Current Issue</a>
+    <a href="#" onclick="goTab('submit');return false">Submit</a>
+    <a href="#" onclick="goTab('guide');return false">Guidelines</a>
+    <a href="#" onclick="goTab('about');return false">Editorial Board</a>
+    <a href="#" onclick="goTab('articles');return false">Archives</a>
+  </div>
+</nav>
+
+<!-- ─── HERO ──────────────────────────────────────────────────────────────────── -->
+<div class="hero">
+  <div class="in">
+    <div class="ht">
+      <div class="hlbl">Peer-Reviewed Open Access Journal</div>
+      <h1>Advancing Science at the Intersection of Biology &amp; Agriculture</h1>
+      <p>JSBAI publishes original research, review articles, and rapid communications across plant biology, soil science, agri-biotechnology, mycology, and sustainable food systems. Zero APC for Indian institutional affiliations.</p>
+    </div>
+    <div class="hm">
+      <div class="hmet"><span class="hmv">6.52</span><div class="hml">NAAS Rating 2024</div></div>
+      <div class="hmet"><span class="hmv">1.84</span><div class="hml">Impact Factor</div></div>
+      <div class="hmet"><span class="hmv">312</span><div class="hml">Articles Published</div></div>
+    </div>
+  </div>
+</div>
+
+<!-- ─── MAIN ──────────────────────────────────────────────────────────────────── -->
+<div class="main">
+  <div class="content">
+
+    <div class="ann">
+      <span style="font-size:16px;flex-shrink:0">📢</span>
+      <div>
+        <strong>Call for Papers — Special Issue: Mycelium-Based Biomaterials &amp; Sustainable Composites (Vol. 7, Issue 2, July 2025)</strong>
+        <p>Review and research articles on fungal architecture, bio-composite fabrication, mechanical characterisation, and commercial scalability. Guest Editor: Prof. R. Bhattacharya, NABI Mohali. Deadline: <strong>30 May 2025</strong>.</p>
+      </div>
+    </div>
+
+    <!-- TABS -->
+    <div class="tbar">
+      <button class="tb on" onclick="tab(this,'about')">About Journal</button>
+      <button class="tb" onclick="tab(this,'articles')">Current Issue</button>
+      <button class="tb" onclick="tab(this,'submit')">Submit Manuscript</button>
+      <button class="tb" onclick="tab(this,'guide')">Author Guidelines</button>
+    </div>
+
+    <!-- ── ABOUT ───────────────────────────────────────────────────────────── -->
+    <div id="tp-about" class="tp on">
+      <div class="sh">About the Journal <span class="tag">Open Access</span></div>
+      <p style="color:var(--km);margin-bottom:11px;font-size:14.5px">The <em>Journal of Sustainable Biosciences and Agricultural Innovation</em> (JSBAI) is a quarterly, double-blind peer-reviewed journal established in 2018 under BioAgri Academic Publishers Pvt. Ltd. The journal provides a rigorous platform for interdisciplinary research at the intersection of biological sciences and agricultural systems, with an emphasis on sustainability, food security, and technology-driven solutions.</p>
+      <p style="color:var(--km);margin-bottom:14px;font-size:14.5px">JSBAI is indexed in Scopus (since 2020), NAAS-rated at 6.52 (2024), and listed on the UGC-CARE List I. The journal observes a strict zero-APC policy for authors with corresponding affiliations at Indian universities and research institutes.</p>
+      <div class="sh" style="margin-top:22px">Scope &amp; Subject Areas</div>
+      <div class="sg">
+        <div class="si"><strong>Plant Biotechnology</strong>Gene editing, transgenics, molecular breeding</div>
+        <div class="si"><strong>Soil &amp; Rhizosphere Science</strong>Microbial ecology, soil carbon, biofertilisers</div>
+        <div class="si"><strong>Fungal Biology &amp; Mycology</strong>Mycelium composites, endophytes, biocontrol</div>
+        <div class="si"><strong>Sustainable Agronomy</strong>Precision farming, organic systems, water use efficiency</div>
+        <div class="si"><strong>Food Science &amp; Safety</strong>Post-harvest biology, nutraceuticals, packaging</div>
+        <div class="si"><strong>Agri-Biotechnology</strong>Biopesticides, biofortification, fermentation</div>
+        <div class="si"><strong>Climate &amp; Crop Adaptation</strong>Stress physiology, drought tolerance, heat response</div>
+        <div class="si"><strong>Smart Agriculture</strong>Hydroponics, vertical farming, IoT-integrated systems</div>
+      </div>
+
+      <div class="sh" style="margin-top:28px">Editorial Board <span class="tag">Double-Blind Review</span></div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:4px">
+        <div class="gc" style="margin-bottom:0"><div class="er" style="font-size:11px;color:var(--fm);text-transform:uppercase;letter-spacing:.04em;margin-bottom:4px">Editor-in-Chief</div><div style="font-weight:600;color:var(--k)">Prof. Ramachandra Bhattacharya</div><div style="font-size:13px;color:var(--kl)">National Agri-Food Biotechnology Institute (NABI), Mohali, Punjab</div></div>
+        <div class="gc" style="margin-bottom:0"><div class="er" style="font-size:11px;color:var(--fm);text-transform:uppercase;letter-spacing:.04em;margin-bottom:4px">Associate Editor</div><div style="font-weight:600;color:var(--k)">Dr. Kavitha Venkatraman</div><div style="font-size:13px;color:var(--kl)">Indian Agricultural Research Institute (IARI), New Delhi</div></div>
+        <div class="gc" style="margin-bottom:0"><div class="er" style="font-size:11px;color:var(--fm);text-transform:uppercase;letter-spacing:.04em;margin-bottom:4px">Associate Editor</div><div style="font-weight:600;color:var(--k)">Prof. Ajit Singh Dhaliwal</div><div style="font-size:13px;color:var(--kl)">Punjab Agricultural University, Ludhiana</div></div>
+        <div class="gc" style="margin-bottom:0"><div class="er" style="font-size:11px;color:var(--fm);text-transform:uppercase;letter-spacing:.04em;margin-bottom:4px">Managing Editor</div><div style="font-weight:600;color:var(--k)">Dr. Neeraj Mathur</div><div style="font-size:13px;color:var(--kl)">BioAgri Academic Publishers Pvt. Ltd., Gurugram</div></div>
+      </div>
+    </div>
+
+    <!-- ── ARTICLES ────────────────────────────────────────────────────────── -->
+    <div id="tp-articles" class="tp">
+      <div class="sh">Current Issue — Vol. 7, No. 1 (Jan–Mar 2025)</div>
+      <div class="ac">
+        <div class="aci">
+          <div class="atype">Review Article</div>
+          <div class="atitle">Rhizobial Inoculants as Sustainable Nitrogen-Fixation Strategies in Rainfed Legume Systems of Northwest India</div>
+          <div class="aauth">Priya Mehta · Surender Kumar Gill · Anjali Krishnaswamy</div>
+          <div class="aabs">This review synthesises data from 47 field trials conducted between 2010 and 2023 across Punjab, Haryana, and Rajasthan to evaluate the efficacy of commercial rhizobial inoculants in chickpea and lentil production under water-limited conditions…</div>
+        </div>
+        <div class="afoot"><span>Received: 14 Oct 2024 · Accepted: 29 Dec 2024 · Published: 06 Jan 2025</span><a href="#" class="doi">DOI: 10.52843/jsbai.2025.7.1.001</a></div>
+      </div>
+      <div class="ac">
+        <div class="aci">
+          <div class="atype">Original Research</div>
+          <div class="atitle">Characterisation of Trichoderma asperellum Isolates for Biocontrol of Fusarium Wilt in Tomato Under Greenhouse Conditions</div>
+          <div class="aauth">R. Narayanan · S. Prabhu · M. Thangavel · K. Venkatachalam</div>
+          <div class="aabs">Seventeen isolates of Trichoderma asperellum recovered from rhizosphere soils of disease-suppressive fields in Tamil Nadu were evaluated for mycoparasitism, antibiosis, and volatile metabolite production against Fusarium oxysporum f. sp. lycopersici…</div>
+        </div>
+        <div class="afoot"><span>Received: 03 Nov 2024 · Accepted: 18 Jan 2025 · Published: 22 Jan 2025</span><a href="#" class="doi">DOI: 10.52843/jsbai.2025.7.1.002</a></div>
+      </div>
+      <div class="ac">
+        <div class="aci">
+          <div class="atype">Review Article</div>
+          <div class="atitle">Mycelium-Based Biocomposites: Fabrication Pathways, Mechanical Benchmarking, and Barriers to Commercial Scalability</div>
+          <div class="aauth">Under Peer Review</div>
+          <div class="aabs">Fungal mycelium, particularly from Ganoderma lucidum, Pleurotus ostreatus, and Trametes versicolor, is emerging as a low-embodied-energy feedstock for biocomposite fabrication. This review systematically evaluates fabrication parameters and compressive and tensile performance data…</div>
+        </div>
+        <div class="afoot"><span>Received — Under Peer Review</span><span style="color:var(--gl)">● In Review</span></div>
+      </div>
+    </div>
+
+    <!-- ── SUBMIT FORM ─────────────────────────────────────────────────────── -->
+    <div id="tp-submit" class="tp">
+      <div class="sh">Online Manuscript Submission</div>
+      <div class="fn">
+        <span style="font-size:16px;flex-shrink:0;margin-top:1px">ℹ</span>
+        <div>Fields marked <strong>*</strong> are mandatory. Manuscripts must follow JSBAI Author Guidelines. Corresponding authors from Indian institutions are exempt from Article Processing Charges. You will receive an automated email confirmation with your reference ID.</div>
+      </div>
+
+      <form id="subForm" onsubmit="handleSubmit(event)" novalidate>
+
+        <div class="ssub">Manuscript Details</div>
+        <div class="fg"><label>Manuscript Title <span class="req">*</span></label>
+          <input type="text" id="ms_title" placeholder="Enter the full title of your manuscript" required></div>
+        <div class="fr2">
+          <div class="fg"><label>Article Type <span class="req">*</span></label>
+            <select id="ms_type" required>
+              <option value="">— Select type —</option>
+              <option>Original Research Article</option><option>Review Article</option>
+              <option>Short Communication</option><option>Rapid Communication</option>
+              <option>Case Study</option><option>Methodology Paper</option>
+              <option>Letter to the Editor</option>
+            </select></div>
+          <div class="fg"><label>Subject Area <span class="req">*</span></label>
+            <select id="ms_area" required>
+              <option value="">— Select area —</option>
+              <option>Plant Biotechnology</option><option>Soil &amp; Rhizosphere Science</option>
+              <option>Fungal Biology &amp; Mycology</option><option>Sustainable Agronomy</option>
+              <option>Food Science &amp; Safety</option><option>Agri-Biotechnology</option>
+              <option>Climate &amp; Crop Adaptation</option><option>Smart Agriculture</option>
+              <option>Other / Interdisciplinary</option>
+            </select></div>
+        </div>
+        <div class="fg"><label>Abstract <span class="req">*</span> <span class="hint">(max 300 words)</span></label>
+          <textarea id="ms_abstract" placeholder="Paste the structured abstract of your manuscript (Background, Methods, Results, Conclusion)…" style="min-height:120px" required></textarea></div>
+        <div class="fg"><label>Keywords <span class="req">*</span> <span class="hint">(4–8 keywords, comma-separated)</span></label>
+          <input type="text" id="ms_keywords" placeholder="e.g., mycelium composites, Ganoderma, biocomposite fabrication, sustainability" required></div>
+
+        <div class="ssub">Author Information</div>
+        <div class="fr2">
+          <div class="fg"><label>First / Given Name <span class="req">*</span></label>
+            <input type="text" id="auth_first" placeholder="First name" required></div>
+          <div class="fg"><label>Last / Family Name <span class="req">*</span></label>
+            <input type="text" id="auth_last" placeholder="Last name" required></div>
+        </div>
+        <div class="fr2">
+          <div class="fg"><label>Email Address <span class="req">*</span></label>
+            <input type="email" id="auth_email" placeholder="corresponding@institution.ac.in" required></div>
+          <div class="fg"><label>ORCID iD <span class="hint">(optional)</span></label>
+            <input type="text" id="auth_orcid" placeholder="0000-0000-0000-0000"></div>
+        </div>
+        <div class="fg"><label>Institutional Affiliation <span class="req">*</span></label>
+          <input type="text" id="auth_affil" placeholder="Department, Institute / University, City, State, Country" required></div>
+        <div class="fg"><label>Co-Authors <span class="hint">(Name, Affiliation — one per line)</span></label>
+          <textarea id="ms_coauthors" placeholder="Dr. Surender Kumar, Dept. of Mycology, PAU Ludhiana, India" style="min-height:75px"></textarea></div>
+
+        <div class="ssub">File Upload <span class="hint" style="text-transform:none;letter-spacing:0;font-size:12px">&nbsp;Max file size: 15 MB per file</span></div>
+        <div class="fg">
+          <label>Main Manuscript File <span class="req">*</span></label>
+          <div class="fd" onclick="document.getElementById('f_ms').click()">
+            <div class="fd-ico">📄</div>
+            <p><strong>Click to upload</strong> or drag &amp; drop</p>
+            <small>Accepted: .doc, .docx, .pdf — Max 15 MB</small>
+          </div>
+          <div class="fd-name" id="fn_ms"></div>
+          <input type="file" id="f_ms" style="display:none" accept=".doc,.docx,.pdf" required onchange="showFN(this,'fn_ms')">
+        </div>
+        <div class="fr2">
+          <div class="fg">
+            <label>Figures / Supplementary Files</label>
+            <div class="fd" onclick="document.getElementById('f_fig').click()" style="padding:18px 12px">
+              <p><strong>Upload figures</strong></p><small>.jpg, .png, .tif, .xlsx — Max 15 MB</small>
+            </div>
+            <div class="fd-name" id="fn_fig"></div>
+            <input type="file" id="f_fig" style="display:none" accept=".jpg,.jpeg,.png,.tif,.tiff,.xlsx" onchange="showFN(this,'fn_fig')">
+          </div>
+          <div class="fg">
+            <label>Cover Letter</label>
+            <div class="fd" onclick="document.getElementById('f_cl').click()" style="padding:18px 12px">
+              <p><strong>Upload cover letter</strong></p><small>.doc, .docx, .pdf — Max 5 MB</small>
+            </div>
+            <div class="fd-name" id="fn_cl"></div>
+            <input type="file" id="f_cl" style="display:none" accept=".doc,.docx,.pdf" onchange="showFN(this,'fn_cl')">
+          </div>
+        </div>
+
+        <div class="ssub">Declarations</div>
+        <div class="fg"><label>Suggested Reviewers <span class="hint">(optional, max 3)</span></label>
+          <textarea id="ms_rev" placeholder="Name, Affiliation, Email — one per line" style="min-height:65px"></textarea></div>
+        <div class="fg"><label>Funding / Grant Information</label>
+          <input type="text" id="ms_fund" placeholder="e.g., DBT Project No. BT/PR40295 or 'No external funding received'"></div>
+
+        <div style="display:flex;flex-direction:column;gap:9px;margin-bottom:20px">
+          <div class="cg"><input type="checkbox" id="c1" required><label for="c1">I confirm this manuscript has not been published elsewhere and is not under consideration by another journal.</label></div>
+          <div class="cg"><input type="checkbox" id="c2" required><label for="c2">All authors have read and approved the manuscript and consent to submission.</label></div>
+          <div class="cg"><input type="checkbox" id="c3" required><label for="c3">The manuscript has been prepared in accordance with JSBAI Author Guidelines, including APA 7th edition citation format.</label></div>
+          <div class="cg"><input type="checkbox" id="c4" required><label for="c4">I accept the journal's Terms of Submission and understand JSBAI reserves the right to decline articles that do not meet its ethical standards.</label></div>
+        </div>
+
+        <div>
+          <button type="submit" class="sbtn" id="sbtn">Submit Manuscript →</button>
+          <div class="prog">
+            <div class="pb" id="pb"><div class="pf" id="pf"></div></div>
+            <div class="pl" id="pl"></div>
+          </div>
+          <p style="font-size:12.5px;color:var(--kl);margin-top:10px">You will receive an email confirmation within a few minutes of successful submission.</p>
+        </div>
+      </form>
+    </div>
+
+    <!-- ── GUIDELINES ──────────────────────────────────────────────────────── -->
+    <div id="tp-guide" class="tp">
+      <div class="sh">Author Guidelines</div>
+      <div class="gc"><h4>Manuscript Preparation</h4><ul>
+        <li>Prepare manuscripts in Microsoft Word (.docx) using Times New Roman 12pt, double-spaced, A4 page size with 2.5 cm margins.</li>
+        <li>Sections: Title Page → Abstract → Keywords → Introduction → Materials &amp; Methods → Results → Discussion → Conclusion → Acknowledgements → References.</li>
+        <li>Review Articles: Title Page → Abstract → Keywords → Introduction → Thematic Sections → Conclusions → Future Directions → References.</li>
+        <li>Word limit: Original Research 5,000–8,000; Review Articles 6,000–12,000; Short Communications 1,500–3,000 words.</li>
+      </ul></div>
+      <div class="gc"><h4>Citation &amp; Reference Style</h4><ul>
+        <li>JSBAI follows <strong>APA 7th Edition</strong> reference style throughout.</li>
+        <li>In-text citations: (Author, Year); (Author &amp; Author, Year); (Author et al., Year) for three or more authors.</li>
+        <li>All references in a single alphabetically ordered list at the end of the manuscript. DOIs must be included where available.</li>
+        <li>Self-citation should not exceed 15% of total references.</li>
+      </ul></div>
+      <div class="gc"><h4>Figures, Tables &amp; Data</h4><ul>
+        <li>Figures: minimum 300 DPI (600 DPI recommended for micrographs); TIFF or high-resolution JPEG preferred.</li>
+        <li>Tables should be editable (Word format), not embedded as images.</li>
+        <li>Raw datasets should be deposited in a public repository (Zenodo, Figshare) and linked in the manuscript.</li>
+      </ul></div>
+      <div class="gc"><h4>Peer Review Process</h4><ul>
+        <li>JSBAI employs double-blind peer review. Manuscripts are assigned to two independent referees with domain expertise.</li>
+        <li>Initial editorial screening: 5–7 working days. Full review turnaround: 6–10 weeks.</li>
+        <li>Revised manuscripts should be resubmitted within 60 days with a point-by-point response to reviewer comments.</li>
+      </ul></div>
+      <div class="gc"><h4>Ethics &amp; Plagiarism Policy</h4><ul>
+        <li>All submissions are screened using iThenticate. Manuscripts with similarity index above 15% (excluding references) will be returned without review.</li>
+        <li>Research involving human subjects or animals must include a statement of ethical approval from a recognised institutional review board.</li>
+        <li>JSBAI is a signatory to the COPE (Committee on Publication Ethics) guidelines.</li>
+      </ul></div>
+      <div class="gc"><h4>Article Processing Charges</h4><ul>
+        <li><strong>Indian Corresponding Authors:</strong> ₹0 — Fully waived for all institutional affiliations.</li>
+        <li><strong>International Authors:</strong> USD 120 (standard); USD 60 for LMIC countries. Waivers available on request.</li>
+      </ul></div>
+    </div>
+
+  </div><!-- /content -->
+
+  <!-- ─── SIDEBAR ──────────────────────────────────────────────────────────── -->
+  <div class="sidebar">
+    <div class="sc">
+      <div class="sch">Journal Metrics (2024)</div>
+      <div class="scb">
+        <div class="mr"><span class="lbl">NAAS Rating</span><span class="val gd">6.52</span></div>
+        <div class="mr"><span class="lbl">Impact Factor</span><span class="val">1.84</span></div>
+        <div class="mr"><span class="lbl">Acceptance Rate</span><span class="val">28%</span></div>
+        <div class="mr"><span class="lbl">Avg. Review Time</span><span class="val">7 weeks</span></div>
+        <div class="mr"><span class="lbl">H-Index</span><span class="val">11</span></div>
+        <div class="mr"><span class="lbl">CiteScore (Scopus)</span><span class="val">2.3</span></div>
+        <div class="mr"><span class="lbl">Articles (2024)</span><span class="val gr">84</span></div>
+      </div>
+    </div>
+    <div class="sc">
+      <div class="sch">Abstracting &amp; Indexing</div>
+      <div class="scb">
+        <div class="ix">
+          <div class="ii"><span class="in2">Scopus (Elsevier)</span><span class="ck">✔</span></div>
+          <div class="ii"><span class="in2">UGC-CARE List I</span><span class="ck">✔</span></div>
+          <div class="ii"><span class="in2">NAAS India</span><span class="ck">✔</span></div>
+          <div class="ii"><span class="in2">DOAJ</span><span class="ck">✔</span></div>
+          <div class="ii"><span class="in2">CABI Abstracts</span><span class="ck">✔</span></div>
+          <div class="ii"><span class="in2">Google Scholar</span><span class="ck">✔</span></div>
+        </div>
+      </div>
+    </div>
+    <div class="sc">
+      <div class="sch">Upcoming Deadlines</div>
+      <div class="scb">
+        <div class="dl">
+          <div><div style="color:var(--km);font-size:13px">Special Issue: Mycelium Biomaterials</div><span class="obadge">● Open</span></div>
+          <div class="dd">30 May<br>2025</div>
+        </div>
+        <div class="dl">
+          <div style="color:var(--km);font-size:13px">Vol. 7, No. 2 (Regular)</div>
+          <div class="dd">15 Jun<br>2025</div>
+        </div>
+        <div class="dl">
+          <div style="color:var(--km);font-size:13px">Vol. 7, No. 3</div>
+          <div class="dd">15 Sep<br>2025</div>
+        </div>
+      </div>
+    </div>
+    <div class="sc">
+      <div class="sch">Editorial Office</div>
+      <div class="scb" style="font-size:13px;color:var(--km);line-height:1.9">
+        <div><strong style="color:var(--k)">BioAgri Academic Publishers Pvt. Ltd.</strong></div>
+        <div>14-B, Institutional Area, Sector 18</div>
+        <div>Gurugram, Haryana — 122 015, India</div>
+        <div style="margin-top:7px">📧 <a href="mailto:editor.jsbai@bioagriacad.in" style="color:var(--fm)">editor.jsbai@bioagriacad.in</a></div>
+        <div>📞 +91-124-456-7890</div>
+        <div style="margin-top:6px;font-size:12px;color:var(--kl)">Office hours: Mon–Fri, 9:30 AM – 5:30 PM IST</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ─── FOOTER ────────────────────────────────────────────────────────────────── -->
+<footer>
+  <div class="fi">
+    <div class="fg4">
+      <div class="fc">
+        <h4>Journal of Sustainable Biosciences &amp; Agricultural Innovation</h4>
+        <p>A double-blind peer-reviewed quarterly journal committed to advancing knowledge in plant biology, soil science, fungal biotechnology, and sustainable agricultural systems.</p>
+        <p class="pub">Published by BioAgri Academic Publishers Pvt. Ltd., New Delhi, India. © 2018–2025 JSBAI. All rights reserved.</p>
+      </div>
+      <div class="fc">
+        <h4>Quick Links</h4>
+        <ul><li><a href="#">Author Guidelines</a></li><li><a href="#">Submit Manuscript</a></li><li><a href="admin.html">Editor Login</a></li><li><a href="#">Editorial Board</a></li><li><a href="#">Archives</a></li><li><a href="#">Ethics Policy</a></li></ul>
+      </div>
+      <div class="fc">
+        <h4>Information For</h4>
+        <ul><li><a href="#">Authors</a></li><li><a href="#">Reviewers</a></li><li><a href="#">Librarians</a></li><li><a href="#">Institutions</a></li><li><a href="#">Subscribe</a></li></ul>
+      </div>
+      <div class="fc">
+        <h4>Policies</h4>
+        <ul><li><a href="#">Open Access Policy</a></li><li><a href="#">Plagiarism Policy</a></li><li><a href="#">Retraction Policy</a></li><li><a href="#">Data Availability</a></li><li><a href="#">COPE Signatory</a></li></ul>
+      </div>
+    </div>
+    <div class="fb">
+      <span>© 2025 JSBAI — BioAgri Academic Publishers Pvt. Ltd.</span>
+      <div class="fiss"><span>eISSN: 2583-8142</span><span>pISSN: 2583-8126</span><span>NAAS: 6.52 (2024)</span></div>
+    </div>
+  </div>
+</footer>
+
+<!-- ─── SUCCESS MODAL ─────────────────────────────────────────────────────────── -->
+<div class="mo" id="modal">
+  <div class="mb">
+    <div class="mi">✅</div>
+    <h3>Submission Received!</h3>
+    <p>Your manuscript has been successfully submitted to JSBAI. Your reference number is:</p>
+    <div class="rid" id="modal_ref">JSBAI-2025-XXXX</div>
+    <p>A confirmation email has been sent to <strong id="modal_email"></strong>. Please save your reference ID to track the status of your manuscript.</p>
+    <p style="font-size:13px;color:var(--kl);margin-top:6px">Expected initial editorial decision: 5–7 working days.</p>
+    <button class="mc" onclick="document.getElementById('modal').classList.remove('on')">Close</button>
+  </div>
+</div>
+
+<!-- ─── ERROR TOAST ───────────────────────────────────────────────────────────── -->
+<div class="toast" id="toast"></div>
+
+<!-- ─── JAVASCRIPT ────────────────────────────────────────────────────────────── -->
+<script>
+/* ── Tab helpers ────────────────────────────────────────────────────────────── */
+const TAB_IDS = ['about','articles','submit','guide'];
+function tab(btn, id) {
+  document.querySelectorAll('.tb').forEach(b => b.classList.remove('on'));
+  document.querySelectorAll('.tp').forEach(p => p.classList.remove('on'));
+  btn.classList.add('on');
+  document.getElementById('tp-' + id).classList.add('on');
+  document.querySelector('.tbar').scrollIntoView({behavior:'smooth', block:'nearest'});
+  document.querySelectorAll('nav a').forEach(a => a.classList.remove('on'));
+}
+function goTab(id) {
+  document.querySelectorAll('.tb').forEach((b, i) => {
+    b.classList.toggle('on', TAB_IDS[i] === id);
+  });
+  document.querySelectorAll('.tp').forEach(p => p.classList.remove('on'));
+  document.getElementById('tp-' + id).classList.add('on');
+  document.querySelector('.tbar').scrollIntoView({behavior:'smooth', block:'nearest'});
+}
+
+/* ── File name display ──────────────────────────────────────────────────────── */
+function showFN(input, targetId) {
+  const names = Array.from(input.files).map(f => f.name).join(', ');
+  document.getElementById(targetId).textContent = names ? '📎 ' + names : '';
+}
+
+/* ── Toast ──────────────────────────────────────────────────────────────────── */
+function showToast(msg, ms = 4000) {
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.classList.add('on');
+  setTimeout(() => t.classList.remove('on'), ms);
+}
+
+/* ── Progress ───────────────────────────────────────────────────────────────── */
+function setProgress(pct, label) {
+  document.getElementById('pf').style.width = pct + '%';
+  document.getElementById('pl').textContent = label;
+}
+
+/* ── File → Base64 ──────────────────────────────────────────────────────────── */
+function fileToBase64(file) {
+  return new Promise((res, rej) => {
+    if (!file) { res(null); return; }
+    const reader = new FileReader();
+    reader.onload  = () => res(reader.result.split(',')[1]);
+    reader.onerror = () => rej(new Error('File read failed'));
+    reader.readAsDataURL(file);
+  });
+}
+
+/* ── Validate file size ─────────────────────────────────────────────────────── */
+function checkSize(file, maxMB) {
+  if (!file) return true;
+  return file.size <= maxMB * 1024 * 1024;
+}
+
+/* ── Main submit handler ────────────────────────────────────────────────────── */
+async function handleSubmit(e) {
+  e.preventDefault();
+
+  // Check script URL configured
+  if (!SCRIPT_URL || SCRIPT_URL.includes('YOUR_GOOGLE')) {
+    showToast('⚠ Backend not configured. Please follow the SETUP.md guide and set SCRIPT_URL in index.html.');
+    return;
+  }
+
+  const btn = document.getElementById('sbtn');
+  const pb  = document.getElementById('pb');
+  const pl  = document.getElementById('pl');
+
+  // Validate file sizes
+  const msFile  = document.getElementById('f_ms').files[0];
+  const figFile = document.getElementById('f_fig').files[0];
+  const clFile  = document.getElementById('f_cl').files[0];
+  if (!msFile) { showToast('Please upload the main manuscript file.'); return; }
+  if (!checkSize(msFile,  15)) { showToast('Manuscript file exceeds 15 MB limit.'); return; }
+  if (!checkSize(figFile, 15)) { showToast('Figures file exceeds 15 MB limit.'); return; }
+  if (!checkSize(clFile,   5)) { showToast('Cover letter exceeds 5 MB limit.'); return; }
+
+  btn.disabled = true;
+  btn.textContent = 'Submitting…';
+  pb.style.display = 'block';
+  pl.style.display = 'block';
+
+  try {
+    setProgress(15, 'Reading files…');
+    const [msB64, figB64, clB64] = await Promise.all([
+      fileToBase64(msFile),
+      fileToBase64(figFile || null),
+      fileToBase64(clFile  || null),
+    ]);
+
+    setProgress(40, 'Uploading to server…');
+
+    const payload = {
+      action:             'submit',
+      title:              document.getElementById('ms_title').value.trim(),
+      articleType:        document.getElementById('ms_type').value,
+      subjectArea:        document.getElementById('ms_area').value,
+      abstract:           document.getElementById('ms_abstract').value.trim(),
+      keywords:           document.getElementById('ms_keywords').value.trim(),
+      firstName:          document.getElementById('auth_first').value.trim(),
+      lastName:           document.getElementById('auth_last').value.trim(),
+      email:              document.getElementById('auth_email').value.trim(),
+      orcid:              document.getElementById('auth_orcid').value.trim(),
+      affiliation:        document.getElementById('auth_affil').value.trim(),
+      coAuthors:          document.getElementById('ms_coauthors').value.trim(),
+      funding:            document.getElementById('ms_fund').value.trim(),
+      suggestedReviewers: document.getElementById('ms_rev').value.trim(),
+      msFile:             msB64,
+      msFileName:         msFile.name,
+      figFile:            figB64,
+      figFileName:        figFile ? figFile.name : '',
+      clFile:             clB64,
+      clFileName:         clFile ? clFile.name : '',
+    };
+
+    setProgress(65, 'Saving submission and sending emails…');
+
+    const res  = await fetch(SCRIPT_URL, {
+      method:   'POST',
+      redirect: 'follow',
+      headers:  { 'Content-Type': 'text/plain' },
+      body:     JSON.stringify(payload),
+    });
+
+    setProgress(90, 'Finalising…');
+    const json = await res.json();
+
+    if (!json.success) throw new Error(json.error || 'Server error');
+
+    setProgress(100, 'Done!');
+
+    // Show success modal
+    document.getElementById('modal_ref').textContent   = json.refId;
+    document.getElementById('modal_email').textContent = payload.email;
+    document.getElementById('modal').classList.add('on');
+    document.getElementById('subForm').reset();
+    ['fn_ms','fn_fig','fn_cl'].forEach(id => document.getElementById(id).textContent = '');
+
+  } catch (err) {
+    showToast('Submission failed: ' + err.message + '. Please try again or contact the editorial office.');
+    console.error(err);
+  } finally {
+    btn.disabled = false;
+    btn.textContent = 'Submit Manuscript →';
+    setTimeout(() => {
+      pb.style.display = 'none';
+      pl.style.display = 'none';
+      setProgress(0, '');
+    }, 3500);
+  }
+}
+</script>
+</body>
+</html>

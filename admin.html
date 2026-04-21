@@ -1,0 +1,377 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>JSBAI — Editorial Admin Dashboard</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500;9..40,600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root{
+  --f:#1a3a2a;--fm:#2a5c3f;--fl:#3b7a55;
+  --cr:#f7f3ec;--cd:#ede7dc;--ww:#fdfaf6;--bg:#eceae5;
+  --k:#1c1a17;--km:#3d3b35;--kl:#7a766e;
+  --g:#b5892d;--gl:#d4a843;--bd:#d1c9ba;
+  --bl:#1a5276;--bll:#d6eaf8;
+  --am:#7d6608;--aml:#fef9e7;
+  --gr:#1a5c34;--grl:#e8f5ed;
+  --rd:#7b241c;--rdl:#fdedec;
+  --pu:#6c3483;--pul:#f4ecf7;
+}
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--k);font-size:14px;min-height:100vh}
+
+/* ── LOGIN ── */
+#lg{min-height:100vh;display:flex;align-items:center;justify-content:center;background:linear-gradient(135deg,#0f2218,var(--f))}
+.lbox{background:#fff;border-radius:10px;padding:40px;width:380px;box-shadow:0 16px 48px rgba(0,0,0,.35)}
+.llogo{width:54px;height:54px;background:var(--f);border-radius:6px;display:flex;align-items:center;justify-content:center;font-size:22px;font-weight:700;color:#fff;margin:0 auto 18px;letter-spacing:-1px}
+.lbox h2{text-align:center;font-size:18px;font-weight:500;margin-bottom:4px}
+.lbox p{text-align:center;font-size:13px;color:var(--kl);margin-bottom:24px}
+.lbox label{display:block;font-size:13px;font-weight:500;color:var(--km);margin-bottom:5px}
+.lbox input{width:100%;padding:9px 12px;border:1px solid var(--bd);border-radius:4px;font-family:'DM Sans',sans-serif;font-size:14px;outline:none;margin-bottom:13px;transition:border .15s}
+.lbox input:focus{border-color:var(--fm);box-shadow:0 0 0 3px rgba(42,92,63,.1)}
+.lbtn{width:100%;background:var(--f);color:#fff;border:none;padding:11px;border-radius:4px;font-size:14px;font-weight:500;font-family:'DM Sans',sans-serif;cursor:pointer;transition:background .2s}
+.lbtn:hover{background:var(--fm)}
+.lerr{background:#fdedec;border:1px solid #f1948a;color:#7b241c;padding:9px 12px;border-radius:3px;font-size:13px;margin-bottom:12px;display:none}
+
+/* ── DASHBOARD ── */
+#dash{display:none}
+.topbar{background:var(--f);color:#fff;padding:0 24px;display:flex;align-items:center;justify-content:space-between;height:54px;position:sticky;top:0;z-index:100;box-shadow:0 2px 10px rgba(0,0,0,.2)}
+.tb-l{display:flex;align-items:center;gap:14px}
+.tb-logo{font-size:16px;font-weight:600;letter-spacing:-.5px}
+.tb-sub{font-size:12px;color:rgba(255,255,255,.5)}
+.tb-r{display:flex;align-items:center;gap:18px;font-size:13px}
+.tb-r a{color:rgba(255,255,255,.7);text-decoration:none;cursor:pointer;transition:color .15s}.tb-r a:hover{color:#fff}
+#lastref{font-size:11px;color:rgba(255,255,255,.35)}
+
+.page{max-width:1440px;margin:auto;padding:22px 24px}
+
+/* Stats */
+.stats{display:grid;grid-template-columns:repeat(5,1fr);gap:12px;margin-bottom:22px}
+.sc{background:#fff;border:1px solid var(--bd);border-radius:6px;padding:16px 18px}
+.sv{font-size:30px;font-weight:500;line-height:1;margin-bottom:4px}
+.sl{font-size:12px;color:var(--kl)}
+.sc.bl .sv{color:var(--bl)}.sc.am .sv{color:var(--am)}.sc.gr .sv{color:var(--gr)}.sc.rd .sv{color:var(--rd)}.sc.pu .sv{color:var(--pu)}
+
+/* Controls */
+.controls{background:#fff;border:1px solid var(--bd);border-radius:6px;padding:13px 16px;margin-bottom:14px;display:flex;gap:10px;flex-wrap:wrap;align-items:center}
+.controls input{flex:1;min-width:220px;padding:8px 12px;border:1px solid var(--bd);border-radius:3px;font-family:'DM Sans',sans-serif;font-size:13.5px;outline:none;transition:border .15s}
+.controls input:focus{border-color:var(--fm)}
+.controls select{padding:8px 12px;border:1px solid var(--bd);border-radius:3px;font-family:'DM Sans',sans-serif;font-size:13px;outline:none;background:#fff;cursor:pointer}
+.rbtn{padding:8px 18px;background:var(--f);color:#fff;border:none;border-radius:3px;font-size:13px;font-weight:500;font-family:'DM Sans',sans-serif;cursor:pointer;transition:background .2s}
+.rbtn:hover{background:var(--fm)}
+.count{font-size:13px;color:var(--kl);margin-left:auto}
+
+/* Table */
+.tw{background:#fff;border:1px solid var(--bd);border-radius:6px;overflow:auto}
+table{width:100%;border-collapse:collapse;font-size:13px;min-width:1100px}
+thead{background:var(--cr);position:sticky;top:0;z-index:10}
+th{padding:10px 13px;text-align:left;font-weight:500;font-size:11.5px;color:var(--kl);letter-spacing:.04em;text-transform:uppercase;border-bottom:1px solid var(--bd);white-space:nowrap}
+td{padding:11px 13px;border-bottom:1px solid var(--cd);vertical-align:top}
+tr:last-child td{border-bottom:none}
+tr:hover td{background:#fafaf7}
+.rcode{font-family:'DM Mono',monospace;font-size:12px;font-weight:500;color:var(--fm);white-space:nowrap}
+.mstitle{font-weight:500;color:var(--k);line-height:1.4;max-width:240px}
+.mstype{font-size:11px;color:var(--kl);margin-top:2px}
+.mskw{font-size:11px;color:var(--kl);margin-top:3px;max-width:240px;line-height:1.4}
+.aname{font-weight:500;color:var(--k)}
+.aemail{font-size:12px;color:var(--kl)}
+.aaffil{font-size:12px;color:var(--kl);margin-top:2px;max-width:180px;line-height:1.4}
+.dcell{font-size:12px;color:var(--kl);white-space:nowrap}
+.flink{color:var(--fm);text-decoration:none;font-size:12px;display:block;margin-top:2px}.flink:hover{text-decoration:underline}
+
+/* Status badges */
+.sbadge{display:inline-flex;align-items:center;gap:5px;padding:3px 9px;border-radius:20px;font-size:11px;font-weight:500;white-space:nowrap}
+.sbadge::before{content:'●';font-size:8px}
+.s-review  {background:var(--bll);color:var(--bl)}
+.s-screen  {background:var(--cd);color:var(--kl)}
+.s-revision{background:var(--aml);color:var(--am)}
+.s-accepted{background:var(--grl);color:var(--gr)}
+.s-rejected{background:var(--rdl);color:var(--rd)}
+.s-publish {background:var(--pul);color:var(--pu)}
+
+.ssel{border:1px solid var(--bd);border-radius:3px;padding:5px 8px;font-size:12px;font-family:'DM Sans',sans-serif;outline:none;background:#fff;cursor:pointer;margin-top:5px;width:100%;transition:border .15s}
+.ssel:focus{border-color:var(--fm)}
+.ntxt{width:100%;border:1px solid var(--bd);border-radius:3px;padding:6px 8px;font-size:12px;font-family:'DM Sans',sans-serif;outline:none;resize:vertical;min-height:50px;margin-top:5px;transition:border .15s}
+.ntxt:focus{border-color:var(--fm)}
+.nbtn{font-size:11px;padding:4px 11px;background:var(--f);color:#fff;border:none;border-radius:3px;cursor:pointer;margin-top:5px;font-family:'DM Sans',sans-serif}
+.nbtn:hover{background:var(--fm)}
+
+.empty{text-align:center;padding:60px;color:var(--kl)}
+.empty .eico{font-size:36px;margin-bottom:10px}
+.loadrow td{text-align:center;padding:48px;color:var(--kl)}
+.spinner{display:inline-block;width:18px;height:18px;border:2px solid var(--bd);border-top-color:var(--fm);border-radius:50%;animation:spin .7s linear infinite;vertical-align:middle;margin-right:8px}
+@keyframes spin{to{transform:rotate(360deg)}}
+
+/* Toast */
+.toast{position:fixed;bottom:24px;right:24px;background:var(--f);color:#fff;padding:11px 20px;border-radius:6px;font-size:13px;z-index:9999;opacity:0;transition:opacity .3s;pointer-events:none;max-width:320px}
+.toast.on{opacity:1}
+
+@media(max-width:1000px){.stats{grid-template-columns:repeat(3,1fr)}}
+</style>
+</head>
+<body>
+
+<script>
+  // ⚠ PASTE YOUR SCRIPT URL AND SET YOUR PASSWORD — must match Code.gs
+  const SCRIPT_URL    = 'https://script.google.com/macros/s/AKfycbwo56WXPBoVljHnuSJS1RXxBjBX0ywntQMwC_jT9_m4lsS9x8PmrNifrJt6LtKAJk9z/exec';
+  const ADMIN_PASSWORD = 'Jp7NaW56v';
+</script>
+
+<!-- ── LOGIN ──────────────────────────────────────────────────────────────────── -->
+<div id="lg">
+  <div class="lbox">
+    <div class="llogo">JS</div>
+    <h2>JSBAI Editorial Portal</h2>
+    <p>Sign in to access the manuscript management dashboard</p>
+    <div class="lerr" id="lerr">Incorrect password. Please try again.</div>
+    <label>Username</label>
+    <input type="text" id="lu" value="editor" placeholder="editor">
+    <label>Password</label>
+    <input type="password" id="lp" placeholder="Enter admin password" onkeydown="if(event.key==='Enter')login()">
+    <button class="lbtn" onclick="login()">Sign In</button>
+  </div>
+</div>
+
+<!-- ── DASHBOARD ──────────────────────────────────────────────────────────────── -->
+<div id="dash">
+  <div class="topbar">
+    <div class="tb-l">
+      <div class="tb-logo">JSBAI</div>
+      <div class="tb-sub">Editorial Management System</div>
+    </div>
+    <div class="tb-r">
+      <span id="lastref"></span>
+      <a onclick="loadData()">⟳ Refresh</a>
+      <a href="index.html">← Journal Site</a>
+      <a onclick="logout()">Sign Out</a>
+    </div>
+  </div>
+
+  <div class="page">
+    <!-- Stats -->
+    <div class="stats">
+      <div class="sc"><div class="sv" id="s-all">—</div><div class="sl">Total Submissions</div></div>
+      <div class="sc bl"><div class="sv" id="s-rev">—</div><div class="sl">Under Review</div></div>
+      <div class="sc am"><div class="sv" id="s-rvis">—</div><div class="sl">Revision Requested</div></div>
+      <div class="sc gr"><div class="sv" id="s-acc">—</div><div class="sl">Accepted</div></div>
+      <div class="sc rd"><div class="sv" id="s-rej">—</div><div class="sl">Rejected</div></div>
+    </div>
+
+    <!-- Controls -->
+    <div class="controls">
+      <input type="text" id="srch" placeholder="Search title, author, ref ID, email, affiliation…" oninput="filter()">
+      <select id="sflt" onchange="filter()">
+        <option value="">All Statuses</option>
+        <option>Under Editorial Review</option><option>Initial Screening</option>
+        <option>Revision Requested</option><option>Accepted</option>
+        <option>Rejected</option><option>Published</option>
+      </select>
+      <select id="tflt" onchange="filter()">
+        <option value="">All Article Types</option>
+        <option>Original Research Article</option><option>Review Article</option>
+        <option>Short Communication</option><option>Rapid Communication</option>
+        <option>Case Study</option><option>Methodology Paper</option>
+        <option>Letter to the Editor</option>
+      </select>
+      <button class="rbtn" onclick="loadData()">Reload</button>
+      <span class="count" id="rcount"></span>
+    </div>
+
+    <!-- Table -->
+    <div class="tw">
+      <table>
+        <thead>
+          <tr>
+            <th>Ref ID</th>
+            <th>Manuscript</th>
+            <th>Corresponding Author</th>
+            <th>Affiliation</th>
+            <th>Files</th>
+            <th>Submitted</th>
+            <th style="min-width:160px">Status</th>
+            <th style="min-width:180px">Editor Notes</th>
+          </tr>
+        </thead>
+        <tbody id="tbody">
+          <tr class="loadrow"><td colspan="8"><span class="spinner"></span>Loading submissions…</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+let all = [];
+
+/* ── Auth ─────────────────────────────────────────────────────────────────── */
+function login() {
+  if (document.getElementById('lp').value === ADMIN_PASSWORD) {
+    sessionStorage.setItem('jsbai_ok', '1');
+    document.getElementById('lg').style.display = 'none';
+    document.getElementById('dash').style.display = 'block';
+    loadData();
+  } else {
+    document.getElementById('lerr').style.display = 'block';
+  }
+}
+function logout() { sessionStorage.removeItem('jsbai_ok'); location.reload(); }
+if (sessionStorage.getItem('jsbai_ok')) {
+  document.getElementById('lg').style.display = 'none';
+  document.getElementById('dash').style.display = 'block';
+  loadData();
+}
+
+/* ── Load data ────────────────────────────────────────────────────────────── */
+async function loadData() {
+  document.getElementById('tbody').innerHTML =
+    '<tr class="loadrow"><td colspan="8"><span class="spinner"></span>Fetching submissions from database…</td></tr>';
+
+  if (!SCRIPT_URL || SCRIPT_URL.includes('YOUR_GOOGLE')) {
+    document.getElementById('tbody').innerHTML =
+      '<tr class="loadrow"><td colspan="8">⚠ Backend not configured — set SCRIPT_URL in admin.html</td></tr>';
+    return;
+  }
+
+  try {
+    const url  = SCRIPT_URL + '?action=getAll&pwd=' + encodeURIComponent(ADMIN_PASSWORD);
+    const res  = await fetch(url, { redirect: 'follow' });
+    const json = await res.json();
+    if (!json.success) throw new Error(json.error);
+    all = json.data || [];
+    updateStats(all);
+    render(all);
+    document.getElementById('lastref').textContent = 'Refreshed: ' + new Date().toLocaleTimeString('en-IN');
+  } catch (err) {
+    document.getElementById('tbody').innerHTML =
+      `<tr class="loadrow"><td colspan="8">Error loading data: ${err.message}</td></tr>`;
+  }
+}
+
+/* ── Stats ────────────────────────────────────────────────────────────────── */
+function updateStats(d) {
+  document.getElementById('s-all').textContent  = d.length;
+  document.getElementById('s-rev').textContent  = d.filter(r => r['Status']==='Under Editorial Review').length;
+  document.getElementById('s-rvis').textContent = d.filter(r => r['Status']==='Revision Requested').length;
+  document.getElementById('s-acc').textContent  = d.filter(r => r['Status']==='Accepted').length;
+  document.getElementById('s-rej').textContent  = d.filter(r => r['Status']==='Rejected').length;
+}
+
+/* ── Filter ───────────────────────────────────────────────────────────────── */
+function filter() {
+  const q  = document.getElementById('srch').value.toLowerCase();
+  const sf = document.getElementById('sflt').value;
+  const tf = document.getElementById('tflt').value;
+  const fd = all.filter(r => {
+    const txt = [r['Ref ID'],r['Title'],r['First Name'],r['Last Name'],r['Email'],r['Affiliation']].join(' ').toLowerCase();
+    return (!q || txt.includes(q)) && (!sf || r['Status']===sf) && (!tf || r['Article Type']===tf);
+  });
+  render(fd);
+}
+
+/* ── Status class ─────────────────────────────────────────────────────────── */
+function sc(s) {
+  return {
+    'Under Editorial Review':'s-review','Initial Screening':'s-screen',
+    'Revision Requested':'s-revision','Accepted':'s-accepted',
+    'Rejected':'s-rejected','Published':'s-publish'
+  }[s] || 's-screen';
+}
+
+/* ── Render ───────────────────────────────────────────────────────────────── */
+function render(data) {
+  document.getElementById('rcount').textContent = data.length + ' record' + (data.length!==1?'s':'');
+  const tbody = document.getElementById('tbody');
+  if (!data.length) {
+    tbody.innerHTML = '<tr><td colspan="8"><div class="empty"><div class="eico">📭</div><p>No submissions match your filters.</p></div></td></tr>';
+    return;
+  }
+  tbody.innerHTML = data.map(r => {
+    const ref  = r['Ref ID'] || '';
+    const safe = s => (s||'').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+    return `<tr>
+      <td><div class="rcode">${safe(ref)}</div></td>
+      <td>
+        <div class="mstitle">${safe(r['Title'])}</div>
+        <div class="mstype">${safe(r['Article Type'])} · ${safe(r['Subject Area'])}</div>
+        ${r['Keywords']?`<div class="mskw">${safe(r['Keywords'])}</div>`:''}
+      </td>
+      <td>
+        <div class="aname">${safe(r['First Name'])} ${safe(r['Last Name'])}</div>
+        <div class="aemail">${safe(r['Email'])}</div>
+        ${r['ORCID']?`<div style="font-size:11px;color:var(--kl)">ORCID: ${safe(r['ORCID'])}</div>`:''}
+      </td>
+      <td><div class="aaffil">${safe(r['Affiliation'])||'—'}</div></td>
+      <td>
+        ${r['Manuscript URL']?`<a href="${r['Manuscript URL']}" target="_blank" class="flink">📄 Manuscript</a>`:'<span style="font-size:12px;color:var(--kl)">—</span>'}
+        ${r['Cover Letter URL']?`<a href="${r['Cover Letter URL']}" target="_blank" class="flink">📝 Cover Letter</a>`:''}
+        ${r['Figures URL']?`<a href="${r['Figures URL']}" target="_blank" class="flink">🖼 Figures</a>`:''}
+      </td>
+      <td><div class="dcell">${safe(r['Submitted At'])||'—'}</div></td>
+      <td>
+        <span class="sbadge ${sc(r['Status'])}">${safe(r['Status'])}</span>
+        <select class="ssel" onchange="updateStatus('${ref}',this.value)">
+          <option>Under Editorial Review</option><option>Initial Screening</option>
+          <option>Revision Requested</option><option>Accepted</option>
+          <option>Rejected</option><option>Published</option>
+        </select>
+      </td>
+      <td>
+        <textarea class="ntxt" id="note-${ref}" placeholder="Add internal note…">${safe(r['Editor Notes']||'')}</textarea>
+        <button class="nbtn" onclick="saveNote('${ref}')">Save Note</button>
+      </td>
+    </tr>`;
+  }).join('');
+
+  // Set current status in each dropdown
+  data.forEach(r => {
+    const sel = document.querySelector(`select[onchange*="'${r['Ref ID']}'"]`);
+    if (sel && r['Status']) sel.value = r['Status'];
+  });
+}
+
+/* ── Update status ────────────────────────────────────────────────────────── */
+async function updateStatus(refId, newStatus) {
+  try {
+    const res  = await fetch(SCRIPT_URL, {
+      method: 'POST', redirect: 'follow',
+      headers: { 'Content-Type': 'text/plain' },
+      body: JSON.stringify({ action:'updateStatus', refId, status:newStatus, pwd:ADMIN_PASSWORD }),
+    });
+    const json = await res.json();
+    if (!json.success) throw new Error(json.error);
+    const rec = all.find(r => r['Ref ID'] === refId);
+    if (rec) rec['Status'] = newStatus;
+    updateStats(all);
+    showToast('✓ Status updated to: ' + newStatus);
+  } catch (err) { showToast('Error: ' + err.message); }
+}
+
+/* ── Save note ────────────────────────────────────────────────────────────── */
+async function saveNote(refId) {
+  const note = document.getElementById('note-' + refId)?.value || '';
+  try {
+    const res  = await fetch(SCRIPT_URL, {
+      method: 'POST', redirect: 'follow',
+      headers: { 'Content-Type': 'text/plain' },
+      body: JSON.stringify({ action:'saveNote', refId, note, pwd:ADMIN_PASSWORD }),
+    });
+    const json = await res.json();
+    if (!json.success) throw new Error(json.error);
+    const rec = all.find(r => r['Ref ID'] === refId);
+    if (rec) rec['Editor Notes'] = note;
+    showToast('✓ Note saved');
+  } catch (err) { showToast('Error: ' + err.message); }
+}
+
+/* ── Toast ────────────────────────────────────────────────────────────────── */
+function showToast(msg) {
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.classList.add('on');
+  setTimeout(() => t.classList.remove('on'), 3000);
+}
+</script>
+</body>
+</html>
